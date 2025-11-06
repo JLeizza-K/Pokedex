@@ -70,10 +70,13 @@ function App() {
 		v.InferOutput<typeof PokemonSchema>[]
 	>([]);
 	const [filteredNames, setFilteredNames] = useState("");
-	// const [filteredTypes, setFilteredTypes] =
+	const [filteredTypes, setFilteredTypes] = useState("");
 	// Constants
-	const displayedPokemons = pokemons.filter((pokemon) =>
-		pokemon.name.includes(filteredNames),
+	const displayedPokemons = pokemons.filter(
+		(pokemon) =>
+			pokemon.name.includes(filteredNames) &&
+			(filteredTypes === "" ||
+				pokemon.types.some((t) => t.type.name === filteredTypes)),
 	);
 	const types = (() => {
 		const allTypes: string[] = [];
@@ -120,7 +123,10 @@ function App() {
 				value={filteredNames}
 				onChange={(fp) => setFilteredNames(fp.target.value)}
 			></input>
-			<select defaultValue="">
+			<select
+				defaultValue=""
+				onChange={(fp) => setFilteredTypes(fp.target.value)}
+			>
 				<option value="">All types</option>
 				{types.map((type, index) => {
 					const typeId = `type-${index}`;
